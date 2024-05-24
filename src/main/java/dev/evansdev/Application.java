@@ -1,49 +1,28 @@
 package dev.evansdev;
 
+import dev.evansdev.customer.Customer;
+import dev.evansdev.customer.CustomerRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
 @SpringBootApplication
-@RestController
-@RequestMapping("api/v1/customers")
 public class Application {
-
-	CustomerRepository customerRepository;
-
-	public Application(CustomerRepository customerRepository) {
-		this.customerRepository = customerRepository;
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@GetMapping
-	public List<Customer> getCustomers() {
-		return customerRepository.findAll();
-	}
+	@Bean
+	CommandLineRunner runner(CustomerRepository ctx) {
+		return args -> {
+			Customer customer1 = new Customer("Dev#1", "dev1@test.com", 30);
+			Customer customer2 = new Customer("Dev#2", "dev2@test.com", 32);
 
-	record NewCustomerRequest(
-			String name,
-			String email,
-			Integer age
-	){}
-
-	@PostMapping
-	public void addCustomer(@RequestBody NewCustomerRequest request) {
-		Customer customer = new Customer();
-		customer.setName(request.name());
-		customer.setEmail(request.email());
-		customer.setAge(request.age());
-
-		customerRepository.save(customer);
-	}
-
-	@DeleteMapping("/{customerId}")
-	public void deleteCustomer(@PathVariable("customerId") Integer id) {
-		customerRepository.deleteById(id);
+			List<Customer> allCustomers = List.of(customer1, customer2);
+			ctx.saveAll(allCustomers);
+		};
 	}
 }

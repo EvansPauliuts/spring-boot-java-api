@@ -2,16 +2,29 @@
 GET http://localhost:8000/api/v1/customers
 
 ###
+GET http://localhost:8000/api/v1/customers/4
+
+###
 POST http://localhost:8000/api/v1/customers
 Content-Type: application/json
 
 {
-    "name": "Dev #3",
-    "age": 30,
+    "name": "Dev #4",
+    "age": 35,
     "email": "dev3@test.com"
 }
 
 ###
 DELETE http://localhost:8000/api/v1/customers/1
+
+###
+PUT http://localhost:8000/api/v1/customers/1
+Content-Type: application/json
+
+{
+    "name": "Dev [UPDATE]",
+    "email": "test@test.com",
+    "age": 35
+}
 
 ###
