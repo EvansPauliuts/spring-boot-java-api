@@ -1,0 +1,8 @@
+spring:
+    application:
+        name: spring-boot-java-api
+    profiles:
+        active: dev
+
+server:
+    port: 8000
